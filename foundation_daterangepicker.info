@@ -1,0 +1,6 @@
+name = Foundation Date Range Picker
+description = Foundation Date Range Picker
+core = 7.x
+version = 7.x-1.0
+project = foundation_daterangepicker
+project path = sites/all/modules/third

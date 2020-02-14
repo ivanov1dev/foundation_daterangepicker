@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * Implements hook_requirements().
+ */
+function foundation_daterangepicker_requirements($phase) {
+  $return = [];
+  $t = get_t();
+
+  if ($phase === 'runtime') {
+    $library = libraries_detect('daterangepicker');
+    $version = !empty($library['version']) ? $library['version'] : FALSE;
+    $return['daterangepicker_library'] = [
+      'title' => $t('@label library', ['@label' => 'Date Range Picker']),
+      'value' => $version ?: $t('Not available'),
+      'severity' => $version ? REQUIREMENT_OK : REQUIREMENT_ERROR,
+    ];
+  }
+
+  return $return;
+}

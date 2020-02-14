@@ -1,0 +1,71 @@
+<?php
+
+/**
+ * Implements hook_libraries_info().
+ */
+function foundation_daterangepicker_libraries_info() {
+  $libraries = [];
+
+  if (($library_path = libraries_get_path('daterangepicker'))) {
+    $libraries['daterangepicker'] = [
+      'library path' => $library_path,
+      'name' => 'Date Range Picker',
+      'vendor url' => 'https://github.com/dangrossman/daterangepicker',
+      'download url' => 'https://github.com/dangrossman/daterangepicker/releases',
+      'version callback' => 'foundation_daterangepicker_get_library_version',
+      'version arguments' => [],
+      'files' => [
+        'js' => [
+          'daterangepicker.js',
+        ],
+        'css' => [
+          'daterangepicker.css',
+        ],
+      ],
+      'integration files' => [
+        'foundation_daterangepicker' => [
+          'js' => [
+            'js/form-daterangepicker.js',
+          ],
+          'css' => [
+            'css/form-daterangepicker.css',
+          ],
+        ],
+      ],
+      'dependencies' => ['moment'],
+    ];
+  }
+
+  return $libraries;
+}
+
+/**
+ * Library info "version callback".
+ *
+ * @param array $info
+ *   Library info.
+ *
+ * @return string|false
+ *   Version number.
+ */
+function foundation_daterangepicker_get_library_version(array $info) {
+  static $versions = [];
+
+  $library_path = $info['library path'];
+
+  if (!$library_path) {
+    return FALSE;
+  }
+
+  if (!isset($version[$library_path])) {
+    $versions[$library_path] = FALSE;
+    if (is_readable("$library_path/package.json")) {
+      $package = drupal_json_decode(file_get_contents("$library_path/package.json"));
+      if ($package && !empty($package['version'])) {
+        $versions[$library_path] = $package['version'];
+      }
+    }
+  }
+
+  return $versions[$library_path];
+}
